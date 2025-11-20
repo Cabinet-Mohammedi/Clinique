@@ -1,7 +1,5 @@
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
 <script>
+  // Initialiser Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDaituJimoLNpkMYvr1u4KJC8XEJgbrGZA",
     authDomain: "clinique-9f351.firebaseapp.com",
@@ -13,7 +11,5 @@
   };
 
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const auth = firebase.auth();
+  const auth = firebase.auth();  // Auth instance
 </script>
-
