@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -11,19 +11,19 @@
 </head>
 <body>
 <header><h1>Espace Médecin</h1></header>
-<div id="medContent" style="display:block;">
-  <div class="card">
-    <h3>Liste des rendez-vous</h3>
-    <table id="rdvTable">
-      <thead>
-        <tr><th>N°</th><th>Nom</th><th>Téléphone</th><th>Date</th><th>Actions</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <p>Patients restant: <span id="remaining">0</span></p>
-  </div>
+
+<div id="medContent" class="card">
+  <h3>Liste des rendez-vous</h3>
+  <table id="rdvTable">
+    <thead>
+      <tr><th>N°</th><th>Nom</th><th>Téléphone</th><th>Date</th><th>Actions</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p>Patients restant: <span id="remaining">0</span></p>
   <button onclick="window.location.href='profile.html'">Modifier Email / Mot de passe</button>
 </div>
+
 <script src="doctor.js"></script>
 </body>
 </html>
