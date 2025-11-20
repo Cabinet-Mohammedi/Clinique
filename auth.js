@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "doctor.html"; // page du médecin
       })
       .catch((error) => {
-        loginError.textContent = error.message;
+        loginError.textContent = "Erreur: " + error.message;
       });
   });
 });
