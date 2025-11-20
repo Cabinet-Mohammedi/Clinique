@@ -1,19 +1,19 @@
-﻿document.getElementById("btnChangePwd").addEventListener("click", () => {
-  const currentPwd = localStorage.getItem("mdpMedecin") || "docteur123";
-  const ancien = prompt("Entrer mot de passe actuel:");
-  if (ancien !== currentPwd) { alert("Mot de passe incorrect"); return; }
+document.getElementById("btnChangePwd").onclick = () => {
+  const currentPwd = prompt("Entrez le mot de passe actuel:");
+  const newPwd = prompt("Entrez le nouveau mot de passe:");
+  if (!newPwd) return alert("Mot de passe invalide");
 
-  const nouveau = prompt("Entrer mot de passe nouveau:");
-  if (!nouveau || nouveau.trim() === "") { alert("Mot de passe invalide"); return; }
+  // Stockage temporaire dans Firebase pour exemple (utilisez Firebase Auth pour sécurité réelle)
+  db.ref("medecin/password").set(newPwd)
+    .then(() => alert("Mot de passe changé !"))
+    .catch(err => alert("Erreur: " + err.message));
+};
 
-  localStorage.setItem("mdpMedecin", nouveau);
-  alert("Mot de passe changé avec succès !");
-});
+document.getElementById("btnChangeEmail").onclick = () => {
+  const newEmail = prompt("Entrez le nouvel email:");
+  if (!newEmail) return alert("Email invalide");
 
-// Exemple pour email (en local storage, pas Firebase Auth)
-document.getElementById("btnChangeEmail").addEventListener("click", () => {
-  const email = prompt("Entrer nouveau email:");
-  if (!email || email.trim() === "") { alert("Email invalide"); return; }
-  localStorage.setItem("medecinEmail", email);
-  alert("Email changé avec succès !");
-});
+  db.ref("medecin/email").set(newEmail)
+    .then(() => alert("Email changé !"))
+    .catch(err => alert("Erreur: " + err.message));
+};
