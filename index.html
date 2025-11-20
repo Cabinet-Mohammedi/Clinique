@@ -23,7 +23,33 @@
     <p id="infoReservation"></p>
   </div>
 </main>
+<main>
+  <div class="card">
+    <h3>Réserver un rendez-vous</h3>
+    <input type="text" id="nomPatient" placeholder="Nom et prénom">
+    <input type="tel" id="telPatient" placeholder="Téléphone">
+    <button id="btnReserve">Réserver</button>
+    <p id="infoReservation"></p>
+  </div>
+
+  <!-- Bouton pour contacter le médecin -->
+  <div class="card">
+    <button onclick="window.location.href='tel:0772812293'" 
+            style="background:#28a745; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">
+      Contacter le médecin
+    </button>
+  </div>
+
+  <!-- Bouton pour accéder à l'espace médecin -->
+  <div class="card">
+    <button onclick="window.location.href='doctor.html'" 
+            style="background:#007BFF; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer;">
+      Espace Médecin
+    </button>
+  </div>
+</main>
 
 <script src="patient.js"></script>
 </body>
 </html>
+
