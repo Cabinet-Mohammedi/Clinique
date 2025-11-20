@@ -1,26 +1,31 @@
-﻿const btnReserve = document.getElementById("btnReserve");
-const infoReservation = document.getElementById("infoReservation");
+document.addEventListener("DOMContentLoaded", () => {
+  const btnReserve = document.getElementById("btnReserve");
+  const nomPatient = document.getElementById("nomPatient");
+  const telPatient = document.getElementById("telPatient");
+  const infoReservation = document.getElementById("infoReservation");
 
-btnReserve.addEventListener("click", () => {
-  const nom = document.getElementById("nomPatient").value.trim();
-  const tel = document.getElementById("telPatient").value.trim();
+  btnReserve.addEventListener("click", () => {
+    const nom = nomPatient.value.trim();
+    const tel = telPatient.value.trim();
 
-  if (!nom || !tel) {
-    alert("Veuillez remplir tous les champs.");
-    return;
-  }
+    if (!nom || !tel) { alert("Veuillez remplir tous les champs !"); return; }
 
-  const refRdv = db.ref("rendezvous");
-  refRdv.once("value").then(snapshot => {
-    const total = snapshot.exists() ? snapshot.numChildren() : 0;
-    const remaining = snapshot.exists() ? Object.values(snapshot.val()).filter(r => !r.checked).length : 0;
-    const numero = total + 1;
-    const date = new Date().toLocaleDateString("fr-FR");
+    const ref = db.ref("rendezvous");
+    ref.once("value").then(snapshot => {
+      const numero = snapshot.numChildren() + 1;
+      const remaining = snapshot.forEach(child => !child.val().checked ? 1 : 0) || 0;
 
-    refRdv.push({ nom, tel, numero, date, checked: false });
-    infoReservation.textContent = `Votre numéro: ${numero}. Patients restant avant vous: ${remaining}`;
+      ref.push({
+        nom,
+        tel,
+        numero,
+        date: new Date().toLocaleDateString("fr-FR"),
+        checked: false
+      });
 
-    document.getElementById("nomPatient").value = "";
-    document.getElementById("telPatient").value = "";
+      infoReservation.textContent = `Votre numéro: ${numero}, patients restants avant vous: ${remaining}`;
+      nomPatient.value = "";
+      telPatient.value = "";
+    });
   });
 });
