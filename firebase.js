@@ -1,4 +1,3 @@
-<script>
   // Initialiser Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDaituJimoLNpkMYvr1u4KJC8XEJgbrGZA",
@@ -13,3 +12,4 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();  // Auth instance
 </script>
+
