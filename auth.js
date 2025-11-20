@@ -1,44 +1,92 @@
-// auth.js - Gestion de l'authentification du médecin
+// Initialize Firebase Auth
+const auth = firebase.auth();
 
-// Référence à Firebase
-const medRef = db.ref("medecin");
+// === Créer automatiquement le compte médecin si non existant ===
+const defaultEmail = "abdelmoula.djalal@gmail.com";
+const defaultPassword = "docteur123";
 
-// Vérifier si le médecin est connecté
-export function isLogged() {
-  return localStorage.getItem("loggedMedecin") === "true";
-}
-
-// Connexion du médecin
-export function loginMedecin(inputPwd) {
-  return medRef.child("password").once("value").then(snapshot => {
-    const storedPwd = snapshot.val() || "docteur123";
-    if (inputPwd === storedPwd) {
-      localStorage.setItem("loggedMedecin", "true");
-      return true;
+auth.signInWithEmailAndPassword(defaultEmail, defaultPassword)
+.catch((error) => {
+    if (error.code === 'auth/user-not-found') {
+        auth.createUserWithEmailAndPassword(defaultEmail, defaultPassword)
+        .then(() => console.log("Compte médecin créé automatiquement"))
+        .catch(err => console.error(err.message));
     } else {
-      return false;
+        console.error(error.message);
     }
-  });
-}
+});
 
-// Déconnexion
-export function logoutMedecin() {
-  localStorage.removeItem("loggedMedecin");
-}
+// === Connexion ===
+document.addEventListener("DOMContentLoaded", () => {
+    const btnLogin = document.getElementById("btnLogin");
+    const emailInput = document.getElementById("email");
+    const pwdInput = document.getElementById("password");
+    const loginError = document.getElementById("loginError");
 
-// Changer mot de passe
-export function changePassword(newPwd) {
-  if (!newPwd || newPwd.trim() === "") throw new Error("Mot de passe invalide");
-  return medRef.child("password").set(newPwd);
-}
+    if (btnLogin) {
+        btnLogin.addEventListener("click", () => {
+            auth.signInWithEmailAndPassword(emailInput.value, pwdInput.value)
+            .then(() => {
+                window.location.href = "doctor.html";
+            })
+            .catch(err => {
+                loginError.textContent = err.message;
+            });
+        });
+    }
 
-// Changer email
-export function changeEmail(newEmail) {
-  if (!newEmail || newEmail.trim() === "") throw new Error("Email invalide");
-  return medRef.child("email").set(newEmail);
-}
+    // === Protection pages médecin ===
+    auth.onAuthStateChanged(user => {
+        const medContent = document.getElementById("medContent");
+        if (medContent) {
+            if (user) medContent.style.display = "block";
+            else window.location.href = "login.html";
+        }
+    });
 
-// Obtenir email actuel
-export function getEmail() {
-  return medRef.child("email").once("value").then(snapshot => snapshot.val());
-}
+    // === Déconnexion ===
+    const btnLogout = document.getElementById("btnLogout");
+    if (btnLogout) {
+        btnLogout.addEventListener("click", () => {
+            auth.signOut().then(() => window.location.href="login.html");
+        });
+    }
+
+    // === Changer email ===
+    const btnChangeEmail = document.getElementById("btnChangeEmail");
+    if (btnChangeEmail) {
+        btnChangeEmail.addEventListener("click", async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const newEmail = prompt("Entrez le nouvel email:");
+                if (newEmail) {
+                    try {
+                        await user.updateEmail(newEmail);
+                        alert("Email changé avec succès!");
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                }
+            }
+        });
+    }
+
+    // === Changer mot de passe ===
+    const btnChangePwd = document.getElementById("btnChangePwd");
+    if (btnChangePwd) {
+        btnChangePwd.addEventListener("click", async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const newPwd = prompt("Entrez le nouveau mot de passe:");
+                if (newPwd) {
+                    try {
+                        await user.updatePassword(newPwd);
+                        alert("Mot de passe changé avec succès!");
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                }
+            }
+        });
+    }
+});
