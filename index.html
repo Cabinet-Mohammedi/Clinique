@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cabinet - Réservation</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-database-compat.js"></script>
+<script src="firebase.js"></script>
+</head>
+<body>
+<header>
+  <h1>Cabinet Mohammedi Hakim</h1>
+</header>
+
+<main>
+  <div class="card">
+    <h3>Réserver un rendez-vous</h3>
+    <input type="text" id="nomPatient" placeholder="Nom et prénom">
+    <input type="tel" id="telPatient" placeholder="Téléphone">
+    <button id="btnReserve">Réserver</button>
+    <p id="infoReservation"></p>
+  </div>
+</main>
+
+<script src="patient.js"></script>
+</body>
+</html>
