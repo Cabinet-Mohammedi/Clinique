@@ -1,4 +1,5 @@
-  // Initialiser Firebase
+<script>
+  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyDaituJimoLNpkMYvr1u4KJC8XEJgbrGZA",
     authDomain: "clinique-9f351.firebaseapp.com",
@@ -9,7 +10,7 @@
     appId: "1:537502134144:web:a7d0ba7fb48f97b2775b65"
   };
 
+  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();  // Auth instance
+  const auth = firebase.auth();
 </script>
-
