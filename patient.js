@@ -1,31 +1,42 @@
+// patient.js
+import { db } from "./firebase.js";
+import { ref, push, get, child } from "firebase/database";
+
 document.addEventListener("DOMContentLoaded", () => {
+  const nomInput = document.getElementById("nomPatient");
+  const telInput = document.getElementById("telPatient");
   const btnReserve = document.getElementById("btnReserve");
-  const nomPatient = document.getElementById("nomPatient");
-  const telPatient = document.getElementById("telPatient");
-  const infoReservation = document.getElementById("infoReservation");
+  const info = document.getElementById("infoReservation");
 
-  btnReserve.addEventListener("click", () => {
-    const nom = nomPatient.value.trim();
-    const tel = telPatient.value.trim();
+  btnReserve.addEventListener("click", async () => {
+    const nom = nomInput.value.trim();
+    const tel = telInput.value.trim();
+    if (!nom || !tel) {
+      alert("Veuillez remplir tous les champs !");
+      return;
+    }
 
-    if (!nom || !tel) { alert("Veuillez remplir tous les champs !"); return; }
+    const rendezRef = ref(db, "rendezvous");
+    const snapshot = await get(rendezRef);
+    const numero = snapshot.exists() ? Object.keys(snapshot.val()).length + 1 : 1;
 
-    const ref = db.ref("rendezvous");
-    ref.once("value").then(snapshot => {
-      const numero = snapshot.numChildren() + 1;
-      const remaining = snapshot.forEach(child => !child.val().checked ? 1 : 0) || 0;
-
-      ref.push({
-        nom,
-        tel,
-        numero,
-        date: new Date().toLocaleDateString("fr-FR"),
-        checked: false
-      });
-
-      infoReservation.textContent = `Votre numéro: ${numero}, patients restants avant vous: ${remaining}`;
-      nomPatient.value = "";
-      telPatient.value = "";
+    await push(rendezRef, {
+      nom,
+      tel,
+      numero,
+      date: new Date().toLocaleDateString("fr-FR"),
+      checked: false
     });
+
+    // حساب المتبقين
+    let remaining = 0;
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      remaining = Object.values(data).filter(p => !p.checked).length;
+    }
+
+    info.textContent = `✅ Votre numéro: ${numero}, Patients restant: ${remaining}`;
+    nomInput.value = "";
+    telInput.value = "";
   });
 });
